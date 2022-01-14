@@ -2,6 +2,7 @@
 using namespace std;
 
 // vector<vector<int> > graph(n+1)
+
 class SCC
 {
     private:
@@ -40,23 +41,27 @@ class SCC
         }
 
     public:
-        vector<vector<int> > sccarr;
+        vector<vector<int> > sccarr, graph;
         vector<int> sccidx;
-        vector<vector<int> > graph;
 
         SCC(const vector<vector<int> >& graph)
         {
-            const int n=graph.size();
+            int n=graph.size();
             finished.assign(n,0), visited.assign(n,0), sccidx.assign(n,-1);
 
             for(int i=1; i<graph.size(); i++)
                 if(!visited[i]) tarjanDFS(i, graph);
 
-            for(auto& it : this->graph)
+            for(int i=0; i<this->graph.size(); i++)
             {
-                for(auto& i : it)
-                    i=sccidx[i];
+                auto& it = this->graph[i];
+                for(auto& j : it) j=sccidx[j];
+
+                sort(it.begin(), it.end());
                 it.resize(unique(it.begin(), it.end())-it.begin());
+
+                auto self_cycle=find(it.begin(), it.end(), i);
+                if(self_cycle != it.end()) it.erase(self_cycle);
             }
         }
 };
