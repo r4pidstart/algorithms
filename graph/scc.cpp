@@ -1,10 +1,10 @@
 #include<bits/stdc++.h>
 using namespace std;
 
-// vector<vector<int> > graph(n+1)
 
 class SCC
 {
+    // vector<vector<int> > graph(n+1)
     private:
         vector<int> finished, visited;
         stack<int> stk;
