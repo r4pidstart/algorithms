@@ -1,6 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
-
 class dijkstra
 {
     // graph[from]={to, cost}, O(ElogV)

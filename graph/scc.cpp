@@ -1,7 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
-
-
 class SCC
 {
     // vector<vector<int> > graph(n+1)

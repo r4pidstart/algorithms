@@ -1,6 +1,3 @@
-#include<bits/stdc++.h>
-using namespace std;
-
 class Floyd
 {
     // adjacant matrix 1~n, O(v^3)
