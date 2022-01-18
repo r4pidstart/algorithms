@@ -12,8 +12,8 @@ class seg_tree
         vector<T> tree;
         T _init(const vector<T>& arr, int now, int s, int e)
         {
-            if(s==e) tree[now]=arr[s];
-            else tree[now]=f(_init(arr, now*2, s, (s+e)/2), _init(arr, now*2+1, ((s+e)/2)+1, e)); 
+            if(s==e) return tree[now]=arr[s];
+            else return tree[now]=f(_init(arr, now*2, s, (s+e)/2), _init(arr, now*2+1, ((s+e)/2)+1, e)); 
         }
         T _get(int l, int r, int now, int s, int e)
         {
