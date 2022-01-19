@@ -1,6 +1,6 @@
 class Floyd
 {
-    // adjacant matrix 1~n, O(v^3)
+    // adjacent matrix 1~n, O(V^3)
     public:
         vector<vector<int> > dist;
         Floyd(const vector<vector<int> >& graph)
