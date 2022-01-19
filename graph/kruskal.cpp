@@ -1,6 +1,6 @@
 class kruskal
 {
-    // edge={cost, from, to}, O(ElogE+E)
+    // edge={cost, {from, to}}, O(ElogE+E)
     private:
         class Dsu
         {
@@ -40,6 +40,6 @@ class kruskal
                 if(!dsu.merge(edge[i].second.first, edge[i].second.second))
                     cost+=edge[i].first, used_edge[i]=1, cnt++;
 
-            if(cnt != size-1) cost=-1;
+            // if(cnt != size-1) cost=-1;
         }
 };
