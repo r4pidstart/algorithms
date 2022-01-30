@@ -31,14 +31,6 @@ class network_flow
             graph[from].push_back(e1);
             graph[to].push_back(e2);
         }
-        void add_edge2(int from, int to, int capa)
-        {
-            edge* e1=new edge(from, to, capa);
-            edge* e2=new edge(to, from, capa);
-            e1->reverse_edge=e2, e2->reverse_edge=e1;
-            graph[from].push_back(e1);
-            graph[to].push_back(e2);
-        }
         int find_flow(int from, int to)
         {
             int ret=0;
