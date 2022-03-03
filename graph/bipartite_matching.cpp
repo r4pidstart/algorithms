@@ -4,7 +4,7 @@ class bipartite_matching
     private:
         vector<vector<int> > graph;
         vector<int> btoa, visited;
-        int visit_cnt;
+        int visit_cnt=0;
         bool make_match(int now)
         {
             visited[now]=visit_cnt;
