@@ -4,11 +4,12 @@ class bipartite_matching
     private:
         vector<vector<int> > graph;
         vector<int> btoa, visited;
+        int visit_cnt=0;
         bool make_match(int now)
         {
-            visited[now]=1;
+            visited[now]=visit_cnt;
             for(int next : graph[now])
-                if(btoa[next] == -1 or (!visited[btoa[next]] and make_match(btoa[next])))
+                if(btoa[next] == -1 or (visited[btoa[next]] != visit_cnt and make_match(btoa[next])))
                 {
                     btoa[next]=now;
                     return 1;
@@ -31,7 +32,7 @@ class bipartite_matching
             int match=0;
             for(int i=0; i<graph.size(); i++)
             {
-                fill(visited.begin(), visited.end(), 0);
+                visit_cnt++;
                 if(make_match(i)) match++;
             }
             return match;
