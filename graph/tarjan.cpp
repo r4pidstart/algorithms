@@ -38,7 +38,7 @@ class SCC
 
     public:
         vector<vector<int> > sccarr, graph;
-        vector<int> sccidx;
+        vector<int> sccidx, indegree;
 
         SCC(const vector<vector<int> >& graph)
         {
@@ -59,5 +59,10 @@ class SCC
                 auto self_cycle=find(it.begin(), it.end(), i);
                 if(self_cycle != it.end()) it.erase(self_cycle);
             }
+
+            indegree.assign(this->graph.size(), 0);
+            for(int i=0; i<this->graph.size(); i++)
+                for(auto next : this->graph[i])
+                    indegree[next]++;
         }
 };
