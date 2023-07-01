@@ -1,5 +1,5 @@
 template <typename T>
-class seg_tree
+class seg_tree // 1-based
 {
     private:
         T initial=0;
