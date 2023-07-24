@@ -6,9 +6,9 @@ class Floyd
         Floyd(const vector<vector<int> >& graph)
         {
             dist=graph;
-            for(int i=1; i<dist.size(); i++)
-                for(int j=1; j<dist.size(); j++)
-                    for(int k=1; k<dist.size(); k++)
+            for(int k=1; k<dist.size(); k++)
+                for(int i=1; i<dist.size(); i++)
+                    for(int j=1; j<dist.size(); j++)
                         dist[j][k]=min(dist[j][k], dist[j][i]+dist[i][k]);
         }
 };
