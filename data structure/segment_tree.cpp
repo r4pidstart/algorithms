@@ -2,8 +2,8 @@ template <typename T>
 class seg_tree // 1-based
 {
     private:
-        T initial=0;
-        T base=0;
+        T initial=T();
+        T base=T();
         inline T f(const T& a, const T& b) 
         {
             return (a+b);
