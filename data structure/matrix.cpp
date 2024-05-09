@@ -24,7 +24,7 @@ public:
     matrix<T> operator*(const matrix& b) const
     {
         const matrix& a=*this;
-        matrix<T> ret(a.size(), b.size(), mod);
+        matrix<T> ret(a.size(), b[0].size(), mod);
 
         if(a[0].size() != b.size() or a.mod != b.mod)
             throw runtime_error("rte on matrix multiplication");
@@ -43,5 +43,17 @@ public:
         tmp=tmp*tmp;
         if(n&1) tmp=tmp*a;
         return tmp;
+    }
+    int print(void)
+    {
+#ifdef LOCAL
+        for(int i=0; i<this->size(); i++)
+        {
+            for(int j=0; j<this->mat[0].size(); j++)
+                cout << this->mat[i][j] << ' ';
+            printf("\n");
+        }
+#endif
+        return 0;
     }
 };
