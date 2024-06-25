@@ -4,7 +4,7 @@ class matrix
 public:
     vector<vector<T> > mat;
     long mod;
-    matrix(int a, int b, long mod=LONG_MAX, int init=0)
+    matrix(int a, int b, int init=0, long mod=numeric_limits<T>::max()/2)
     {
         this->mod=mod;
         mat=vector<vector<T> >(a, vector<T>(b, init));
@@ -51,7 +51,7 @@ public:
         {
             for(int j=0; j<this->mat[0].size(); j++)
                 cout << this->mat[i][j] << ' ';
-            printf("\n");
+            cout << '\n';
         }
 #endif
         return 0;
