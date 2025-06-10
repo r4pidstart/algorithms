@@ -24,7 +24,7 @@ public:
     matrix<T> operator*(const matrix& b) const
     {
         const matrix& a=*this;
-        matrix<T> ret(a.size(), b[0].size(), mod);
+        matrix<T> ret(a.size(), b[0].size(), 0, this->mod);
 
         if(a[0].size() != b.size() or a.mod != b.mod)
             throw runtime_error("rte on matrix multiplication");
