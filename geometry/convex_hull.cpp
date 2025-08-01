@@ -48,7 +48,7 @@ struct convex_hull
         nth_element(copied.begin(), copied.begin(), copied.end());
         ref_point=copied[0];
 
-        sort(copied.begin(), copied.end(), comp_ccw);
+        sort(copied.begin()+1, copied.end(), comp_ccw);
 
         deque<pair<T, T> > dq;
         dq.push_back(copied[0]);
