@@ -1,16 +1,17 @@
 class Hld_With_Seg
 {
-private:
     template<typename T>
     class seg_tree;
-
+    
+public:
     vector<seg_tree<int64_t> > segs;
-    vector<int> depth, subtree_size, group_idx_of_node, depth_of_node, 
+    vector<int> depth, subtree_size, group_idx_of_node, 
                 top_node_of_group, bottom_node_of_group, parent;
     vector<tuple<int, int, int64_t> > edges; // {a, b, cost}
     map<pair<int, int>, int> edge_idx; // {a, b} -> edge_idx
     map<int, pair<int, int> > edge_to_seg_idx; // edge_idx -> {group_idx, seg_idx}
-    
+    int group_idx=0;
+
     int get_subtree_size(const vector<vector<pair<int, int64_t> > >& graph, int now, int par)
     {
         subtree_size[now]=1;
@@ -22,12 +23,9 @@ private:
         }
         return subtree_size[now];
     }
-    int heavy_light_decomposition(const vector<vector<pair<int, int64_t> > >& graph, int now, int par, int dep)
+    int heavy_light_decomposition(const vector<vector<pair<int, int64_t> > >& graph, int now, int par)
     {
-        static int group_idx=0;
-
         group_idx_of_node[now]=group_idx;
-        depth_of_node[now]=dep;
 
         int heavy_child=-1, heavy_child_sub_tree_size=-1;
         for(auto& [next, cost] : graph[now])
@@ -50,7 +48,7 @@ private:
         }
 
         parent[heavy_child]=now;
-        heavy_light_decomposition(graph, heavy_child, now, dep+1);
+        heavy_light_decomposition(graph, heavy_child, now);
         for(auto& [next, cost] : graph[now])
         {
             if(next==par or next==heavy_child) continue;
@@ -58,7 +56,7 @@ private:
             top_node_of_group.push_back(next);
             group_idx++;
             parent[next]=now;
-            heavy_light_decomposition(graph, next, now, dep+1); // make a new group
+            heavy_light_decomposition(graph, next, now); // make a new group
         }
 
         return 0;
@@ -80,6 +78,7 @@ private:
                 cur=parent[cur];
             }
 
+            assert(stk.size());
             stk.pop();
 
             // vector<int64_t> tmp(1, lazy_seg_tree<long>::base);
@@ -110,9 +109,8 @@ public:
 
         parent.assign(graph.size(), -1);
         group_idx_of_node.assign(graph.size(), -1);
-        depth_of_node.assign(graph.size(), -1);
         top_node_of_group.push_back(1); // init
-        heavy_light_decomposition(graph, 1, -1, 0);
+        heavy_light_decomposition(graph, 1, -1);
         init_segment_tree();
     }
 
@@ -128,7 +126,11 @@ public:
     }
     int update_one_edge(int a, int b, int64_t value)
     {
-        if(parent[b]!=a) swap(a, b);
+        if(a==-1 or b==-1)
+            return 0;
+        if(!edge_idx.count({a, b}) and !edge_idx.count({b, a}))
+            return 0; // do nothing when the edge do not exists
+        if(depth[a]>depth[b]) swap(a, b);
         assert(parent[b]==a);
         return update_one_edge(edge_idx[{a, b}], value);
     }
@@ -150,7 +152,6 @@ public:
         
             int b_seg_idx=group_idx_of_node[b];
             int b_seg_range_end=depth[b]-depth[top_node_of_group_b]+1;
-            // TODO: check segs[].get(1, 0);
             ret=segs[0].f(ret, segs[b_seg_idx].get(1, b_seg_range_end-1));
             
             // move b
@@ -177,10 +178,10 @@ private:
     {
         public:
             T initial=T();
-            static const T base=T();
+            inline static const T base=T();
             inline T f(const T& a, const T& b) 
             {
-                return max(a, b);
+                return a+b;
             }
             int size;
             vector<T> tree;
@@ -214,5 +215,4 @@ private:
             T update(int index, T value, int now=0, int s=0, int e=0)
                 { return now ? _update(index, value, now, s, e):_update(index, value, 1, 0, size-1); }
     };
-
 };
