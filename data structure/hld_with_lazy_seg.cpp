@@ -194,6 +194,22 @@ public:
 
         return ret;
     }
+    int get_lca(int a, int b)
+    {
+        while(group_idx_of_node[a] != group_idx_of_node[b])
+        {
+            int top_node_of_group_a=top_node_of_group[group_idx_of_node[a]], 
+                top_node_of_group_b=top_node_of_group[group_idx_of_node[b]];
+            
+            if(depth[top_node_of_group_a] > depth[top_node_of_group_b])
+                swap(a, b), swap(top_node_of_group_a, top_node_of_group_b);
+        
+            // move b
+            b=parent[top_node_of_group_b];
+        }
+        
+        return depth[a]<depth[b] ? a:b;
+    }
 
 private:
     template <typename T>
