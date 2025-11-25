@@ -101,16 +101,16 @@ public:
     }
 
 public:
-    Hld_With_Lazy_Seg(const vector<vector<pair<int, int64_t> > >& graph)
+    Hld_With_Lazy_Seg(const vector<vector<pair<int, int64_t> > >& graph, int root=1)
     {
         subtree_size.assign(graph.size(), 0);
         depth.assign(graph.size(), 0);
-        get_subtree_size(graph, 1, -1);
+        get_subtree_size(graph, root, -1);
 
         parent.assign(graph.size(), -1);
         group_idx_of_node.assign(graph.size(), -1);
-        top_node_of_group.push_back(1); // init
-        heavy_light_decomposition(graph, 1, -1);
+        top_node_of_group.push_back(root); // init
+        heavy_light_decomposition(graph, root, -1);
         init_segment_tree();
     }
 
