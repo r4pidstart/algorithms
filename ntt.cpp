@@ -1,6 +1,6 @@
 class NTT {
 public:
-    static const int MOD=998244353, W=3;
+    static const int64_t MOD=998244353, W=3;
     static int64_t power(int64_t base, int64_t exp) {
         int64_t res=1;
         base%=MOD;
@@ -56,6 +56,40 @@ public:
         ntt(fa, true);
         
         vector<int64_t> ret(a.size()+b.size()-1);
+        for (int i=0; i<ret.size(); i++) {
+            ret[i]=fa[i];
+        }
+        return ret;
+    }
+
+    static int64_t power_int(int64_t base, int64_t exp) {
+        int64_t res=1;
+        base%=MOD;
+        while (exp>0) {
+            if (exp%2==1) res=(res*base)%MOD;
+            base=(base*base)%MOD;
+            exp /= 2;
+        }
+        return res;
+    }
+    
+    static vector<int64_t> power(const vector<int64_t>& base, int64_t exp)
+    {
+        if(exp==0) return vector<int64_t>{1};
+
+        vector<int64_t> fa(base.begin(), base.end());
+        int n=1;
+        while(n<(int)base.size()*exp) n<<=1;
+        fa.resize(n);
+
+        ntt(fa, false);
+        
+        for (int i=0; i<n; i++)
+            fa[i]=power_int(fa[i], exp)%MOD;
+        
+        ntt(fa, true);
+        
+        vector<int64_t> ret(n);
         for (int i=0; i<ret.size(); i++) {
             ret[i]=fa[i];
         }
