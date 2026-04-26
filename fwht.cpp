@@ -1,6 +1,6 @@
 class FWHT {
 public:
-    static const int64_t MOD=998244353, W=3;
+    static const int64_t MOD=998244353;
     static int64_t power(int64_t base, int64_t exp) {
         int64_t res=1;
         base%=MOD;
@@ -22,9 +22,6 @@ public:
         }
         
         for (int len=2; len<=n; len<<=1) {
-            int64_t wlen=power(W, (MOD-1)/len);
-            if (invert) wlen=power(wlen, MOD-2);
-            
             for (int i=0; i<n; i+=len) {
                 for (int j=0; j<len/2; j++) {
                     int64_t u=a[i+j], v=a[i+j+len/2];
