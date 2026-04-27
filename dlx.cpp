@@ -157,7 +157,7 @@ public:
 
         return tmp;
     }
-    static vector<int> solve(vector<vector<int> >& table, vector<int>& preselected, int primary_cols=0)
+    static pair<vector<int>, bool> solve(vector<vector<int> >& table, vector<int>& preselected, int primary_cols=0)
     {
         Node head;
         make_linked_list(table, head, primary_cols);
@@ -177,7 +177,7 @@ public:
                 }
                 if(target_node) break;
             }
-            if(!target_node) return {}; // contradiction
+            if(!target_node) return {{}, false}; // contradiction
 
             cover(target_node->column);
             for(Node* next = target_node->r; next != target_node; next = next->r)
@@ -185,8 +185,9 @@ public:
         }
 
         vector<int> tmp;
-        dlx(tmp, head);
+        if(!dlx(tmp, head))
+            return {{}, false};
 
-        return tmp;
+        return {tmp, true};
     }
 };
