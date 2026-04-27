@@ -1,3 +1,8 @@
+// https://www.acmicpc.net/problem/29111
+// 2026-04-27 19:13:44
+#include"bits/stdc++.h"
+using namespace std;
+
 class DLX
 {  
     struct Node 
@@ -148,14 +153,15 @@ public:
         return 0;
     }
 
-    static vector<int> solve(vector<vector<int> >& table)
+    static pair<vector<int>, bool> solve(vector<vector<int> >& table)
     {
         Node head;
         make_linked_list(table, head);
         vector<int> tmp;
-        dlx(tmp, head);
+        if(!dlx(tmp, head))
+            return {{}, false};
 
-        return tmp;
+        return {tmp, true};
     }
     static pair<vector<int>, bool> solve(vector<vector<int> >& table, vector<int>& preselected, int primary_cols=0)
     {
@@ -191,3 +197,15 @@ public:
         return {tmp, true};
     }
 };
+
+int main(void)
+{
+#ifndef LOCAL
+    cin.tie(nullptr)->sync_with_stdio(false);
+#endif
+    
+}
+
+/*
+    
+*/
