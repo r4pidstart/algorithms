@@ -25,7 +25,7 @@ struct convex_hull
         }
     };
 
-    static __int128_t get_dist_sq(pair<T, T>& a, pair<T, T>& b)
+    static __int128_t get_dist_sq(const pair<T, T>& a, const pair<T, T>& b)
     {
         return (__int128_t)(a.first-b.first)*(a.first-b.first)+(__int128_t)(a.second-b.second)*(a.second-b.second);
     }
@@ -66,6 +66,55 @@ struct convex_hull
             dq.push_back(copied[i]);
         }
         return vector<pair<T, T> >(dq.begin(), dq.end());
+    }
+
+    static int check_if_inside(const pair<T, T>& point, const vector<pair<T, T> >& hull)
+    {
+        for(int i=0; i<hull.size(); i++)
+        {
+            if(convex_hull<T>::intersect::ccw(hull[i], hull[(i+1)%hull.size()], point)<=0)
+                return 0;
+        }
+        return 1;
+    }
+
+    static pair<pair<T, T>, pair<T, T> > rotating_calipers(const vector<pair<T, T> >& hull)
+    {
+        int n=hull.size();
+        if(n==1) return {hull[0], hull[0]};
+        if(n==2) return {hull[0], hull[1]};
+
+        pair<pair<T, T>, pair<T, T> > ans;
+        T max_dist=0;
+        int counterpart=1;
+        for(int i=0; i<n; i++)
+        {
+            while(true)
+            {
+                pair<T, T> v1={hull[i].first-hull[(i+1)%n].first, hull[i].second-hull[(i+1)%n].second};
+                pair<T, T> v2={hull[counterpart].first-hull[(counterpart+1)%n].first, hull[counterpart].second-hull[(counterpart+1)%n].second};
+
+                if(convex_hull<T>::intersect::ccw({0,0}, v1, v2)>0)
+                    counterpart=(counterpart+1)%n;
+                else
+                    break;
+
+                T dist=get_dist_sq(hull[i], hull[counterpart]);
+                if(dist>max_dist)
+                {
+                    ans={hull[i], hull[counterpart]};
+                    max_dist=dist;
+                }
+            }
+            T dist=get_dist_sq(hull[i], hull[counterpart]);
+            if(dist>max_dist)
+            {
+                ans={hull[i], hull[counterpart]};
+                max_dist=dist;
+            }
+        }
+
+        return ans;
     }
 };
 template<typename T>
