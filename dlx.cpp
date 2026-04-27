@@ -1,8 +1,3 @@
-// https://www.acmicpc.net/problem/29111
-// 2026-04-27 19:13:44
-#include"bits/stdc++.h"
-using namespace std;
-
 class DLX
 {  
     struct Node 
@@ -197,15 +192,3 @@ public:
         return {tmp, true};
     }
 };
-
-int main(void)
-{
-#ifndef LOCAL
-    cin.tie(nullptr)->sync_with_stdio(false);
-#endif
-    
-}
-
-/*
-    
-*/
