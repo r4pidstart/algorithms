@@ -230,4 +230,21 @@ public:
         splay(eplus1, root);
         return root->r->l;
     }
+
+    // cut [s, e] and paste it after kth element(remaining sequence after cut [s, e])
+    Node* cut_and_paste(int s, int e, int k)
+    {
+        Node* target=gather(s, e);
+        root->r->l=nullptr;
+
+        update(root->r);
+        update(root);
+
+        gather(k, k);
+
+        root->r->l=target;
+        target->p=root->r;
+        update(root->r);
+        update(root);
+    }
 };
