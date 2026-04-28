@@ -53,7 +53,7 @@ public:
             p->l=b;
             x->r=p;
         }
-        else //rright rotation
+        else // right rotation
         {
             b=x->l;
             p->r=b;
@@ -93,7 +93,7 @@ public:
                 break;
             }
             Node *gp=p->p;
-            if(x==p->l and p==gp->l) rotate(p), rotate(x);
+            if((x==p->l) == (p==gp->l)) rotate(p), rotate(x);
             else rotate(x), rotate(x);
         }
         if(g==nullptr) root=x; // now x is root
@@ -106,6 +106,7 @@ public:
         {
             Node* new_node=new Node({key});
             root=new_node;
+            splay(root)
             return;
         }
         
@@ -113,7 +114,7 @@ public:
         Node **insert_location;
         while(true)
         {
-            if(key==p->key) return;
+            // if(key==p->key) return; // for unique element
             if(key < p->key)
             {
                 if(p->l) p=p->l;
@@ -221,6 +222,80 @@ public:
         splay(p); // now nth element is root
     }
 
+    Node* insert_nth(int n, const T& key)
+    {
+        if(n>root->subtree_size)
+            return nullptr;
+        
+        gather(n, n-1); // !?
+        Node* new_node=new Node({key, nullptr, nullptr, root->r});
+        root->r->l=new_node;
+        update(new_node);
+        update(root->r);
+        update(root);
+
+        splay(new_node);
+        return new_node;
+    }
+
+    bool remove_nth(int n)
+    {
+        if(n>=root->subtree_size)
+            return false;
+        
+        Node *target=gather(n, n);
+        root->r->l=nullptr;
+        update(root->r);
+        update(root);
+        splay(root);
+
+        delete target;
+        return true;
+    }
+
+    bool remove_root(void)
+    {
+        if(root==nullptr) return false;
+        Node* p=root;
+        if(p->l and p->r)
+        {
+            Node *left=p->l, *right=p->r;
+            left->p=nullptr;
+
+            root=left;
+            Node* x=root;
+            while(x->r)
+            {
+                push(x);
+                x=x->r;
+            } 
+            splay(x); // now x is root 
+
+            x->r=right;
+            right->p=x;
+            update(x);
+            delete p;
+        }
+        else if(p->l)
+        {
+            root=p->l;
+            root->p=nullptr;
+            delete p;
+        }
+        else if(p->r)
+        {
+            root=p->r;
+            root->p=nullptr;
+            delete p;
+        }
+        else
+        {
+            root=nullptr;
+            delete p;
+        }
+        return true;
+    }
+
     // return the root of subtree that contains [s, e]
     Node* gather(int s, int e)
     {
@@ -232,9 +307,9 @@ public:
     }
 
     // cut [s, e] and paste it after kth element(remaining sequence after cut [s, e])
-    Node* cut_and_paste(int s, int e, int k)
+    void cut_and_paste(int s, int e, int k)
     {
-        Node* target=gather(s, e);
+        Node *target=gather(s, e);
         root->r->l=nullptr;
 
         update(root->r);
